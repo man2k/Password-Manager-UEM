@@ -4,9 +4,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { storage } from "@neutralinojs/lib";
 import bcrypt from "bcryptjs";
-const login = () => {
+import { v4 as uuidv4 } from "uuid";
+
+const Signup = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [cpassword, setCpassword] = useState<string>("");
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -14,37 +17,49 @@ const login = () => {
   const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-
-  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleCpassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCpassword(e.target.value);
+  };
+  const handleSignUp = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (username === "") {
       toast("No username has been provided");
-      return;
-    } else if (password === "") {
+    } else if (password === "" || cpassword === "") {
       toast("No password has been provided");
-      return;
+    } else if (password !== cpassword) {
+      toast("The passwords don't match");
     } else {
-      const k = await storage.getKeys();
-      if (!k.includes(username)) {
-        toast("Wrong Username or Password!");
-      } else {
-        const d = await storage.getData(username);
-        const p = JSON.parse(d);
-        if (await bcrypt.compare(password, p.password)) {
-          toast("You are Logged In!");
-        } else {
-          toast("Wrong Username or Password!");
-        }
+      const u = await storage.getKeys();
+      // console.log(u);
+      if (u.includes(username)) {
+        toast(
+          <div className="text-sm">
+            Username is taken! Please use another username.
+          </div>
+        );
+        return;
       }
+      const salt = bcrypt.genSaltSync(14);
+      console.log(salt);
+      const hashPass = bcrypt.hashSync(password, salt);
+      //   console.log(hashPass);
+      // console.log(bcrypt.compareSync(password, hashPass));
+      await storage.setData(
+        username,
+        JSON.stringify({ id: uuidv4(), username: username, password: hashPass })
+      );
+      toast("You are signed up!");
+      //   const data = await storage.getKeys();
+      //   console.log(data);
     }
   };
 
   return (
-    <main className="bg-black min-h-screen min-w-full flex text-white justify-around ">
+    <main className="bg-black min-h-screen min-w-full flex text-white justify-around">
       <div className="sm:pt-40 p-20 lg:mt-20">
         <h1 className="h-52 w-40 font-mono">
           <span className="text-indigo-300 text-3xl">
-            <span className="text-sky-400 text-5xl">L</span>ogin{" "}
+            <span className="text-sky-400 text-5xl">S</span>ign Up{" "}
           </span>{" "}
         </h1>
       </div>
@@ -63,13 +78,18 @@ const login = () => {
               placeholder="Password"
               onChange={handlePassword}
             />
-
+            <input
+              type="password"
+              className="w-full px-6 py-3 mb-2 border border-slate-600 rounded-lg font-medium bg-slate-600"
+              placeholder="Confirm password"
+              onChange={handleCpassword}
+            />
             <button
               className="bg-cyan-800 hover:bg-indigo-500 text-white text-base rounded-lg py-2.5 px-5 transition-colors w-full text-[19px]"
               type="submit"
-              onClick={handleLogin}
+              onClick={handleSignUp}
             >
-              Log In
+              Sign Up
             </button>
           </form>
           <ToastContainer
@@ -85,10 +105,10 @@ const login = () => {
             theme="dark"
           />
           <p className="text-center mt-3 text-[14px] text-indigo-200 font-mono">
-            Don't have an account?
+            Already have an account?
             <br />
-            <Link to="/signup" className="text-indigo-300 font-bold">
-              Sign Up
+            <Link to="/login" className="text-indigo-300 font-bold">
+              Log In
             </Link>
           </p>
           {/* <p className="text-center mt-3 text-[14px]">
@@ -108,4 +128,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Signup;
