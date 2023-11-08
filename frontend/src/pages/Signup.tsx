@@ -27,7 +27,7 @@ const Signup = () => {
     } else if (password === "" || cpassword === "") {
       toast("No password has been provided");
     } else if (password !== cpassword) {
-      toast("Your passwords don't match");
+      toast("The passwords don't match");
     } else {
       const u = await storage.getKeys();
       // console.log(u);
@@ -55,7 +55,7 @@ const Signup = () => {
   };
 
   return (
-    <main className="min-h-screen min-w-full flex text-white justify-around">
+    <main className="bg-black min-h-screen min-w-full flex text-white justify-around">
       <div className="sm:pt-40 p-20 lg:mt-20">
         <h1 className="h-52 w-40 font-mono">
           <span className="text-indigo-300 text-3xl">

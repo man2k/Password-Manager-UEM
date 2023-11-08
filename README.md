@@ -1,11 +1,6 @@
-# Password Manager UEM
+# neutralinojs-zero
+An empty Neutralinojs app, extend as you wish
 
-Native Password Manager. Written in js with neutralinojs for offline use. #project
-
-## Install Neutralino CLI:
-
-`npm install -g @neutralinojs/neu`
-
-## NeutralinoJS dev commands:
-
-`neu run -- --window-enable-inspector`
+```
+neu create myapp --template neutralinojs/neutralinojs-zero
+```
