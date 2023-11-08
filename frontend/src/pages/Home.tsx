@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
+import { extensions } from "@neutralinojs/lib";
+
 const Home = () => {
+  extensions.dispatch("index", "dataFunction", "").then((e) => {
+    console.log(e);
+  });
+
   return (
-    <main className="bg-black min-h-screen min-w-full text-white">
+    <main className="bg-inherit min-h-screen min-w-full text-white">
       <div className="md:pt-40 p-20 flex justify-center">
         <h1 className="h-52 w-40 font-mono">
           <span className="text-indigo-300 text-3xl">

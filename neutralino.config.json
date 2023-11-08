@@ -6,14 +6,17 @@
   "url": "/",
   "enableServer": true,
   "enableNativeAPI": true,
+  "enableExtensions": true,
+  "exportAuthInfo": true,
   "nativeAllowList": [
     "app.*",
     "storage.*",
-    "os.*"
+    "os.*",
+    "extensions.*"
   ],
   "modes": {
     "window": {
-      "title": "password_manager_uem",
+      "title": "Password Manager UEM",
       "width": 1024,
       "height": 768,
       "minWidth": 1024,
@@ -22,7 +25,7 @@
     }
   },
   "cli": {
-    "binaryName": "password_manager_uem",
+    "binaryName": "Password Manager UEM",
     "resourcesPath": "/frontend/dist/",
     "extensionsPath": "/extensions/",
     "binaryVersion": "4.14.1",
@@ -35,5 +38,11 @@
       "devCommand": "npm run dev",
       "buildCommand": "npm run build"
   }
-  }
+  },
+  "extensions": [
+    {
+      "id": "index",
+      "command": "node ${NL_PATH}/extensions/binary/nodeServer/index.js"
+    }
+  ]
 }
