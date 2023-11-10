@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { storage } from "@neutralinojs/lib";
 import bcrypt from "bcryptjs";
@@ -36,7 +36,7 @@ const login = () => {
         if (await bcrypt.compare(password, p.password)) {
           toast("You are Logged In!");
           // console.log(login());
-          login();
+          login(p.id);
         } else {
           toast("Wrong Username or Password!");
         }
@@ -77,18 +77,7 @@ const login = () => {
               Log In
             </button>
           </form>
-          <ToastContainer
-            position="bottom-left"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="dark"
-          />
+
           <p className="text-center mt-3 text-[14px] text-indigo-200 font-mono">
             Don't have an account?
             <br />

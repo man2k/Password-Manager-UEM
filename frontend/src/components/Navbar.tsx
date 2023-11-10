@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="min-w-full h-14 bg-inherit text-indigo-300 text-2xl font-thin font-sans">
+    <nav className="min-w-full h-14 bg-inherit text-indigo-300 text-2xl font-thin font-sans border-b border-violet-300">
       <div className="w-full flex justify-center items-center pt-2">
         <Link
           to="/"

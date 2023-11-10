@@ -1,13 +1,20 @@
-import React, { useState, createContext, FunctionComponent } from "react";
+import React, {
+  useState,
+  createContext,
+  FunctionComponent,
+  useEffect,
+} from "react";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: () => void;
+  uuid: string;
+  login: (id: string) => void;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
+  uuid: "",
   login: () => {
     throw new Error("login function not implemented");
   },
@@ -23,18 +30,31 @@ interface AuthProviderProps {
 export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
   children,
 }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    localStorage.getItem("isAuthenticated") === "true"
+  );
+  const [uuid, setUuid] = useState<string>(localStorage.getItem("uuid") || "");
 
-  const login = () => {
+  const login = (id: string) => {
+    setUuid(id);
     setIsAuthenticated(true);
+    localStorage.setItem("uuid", id);
+    localStorage.setItem("isAuthenticated", "true");
   };
 
   const logout = () => {
+    setUuid("");
     setIsAuthenticated(false);
+    localStorage.setItem("uuid", "");
+    localStorage.setItem("isAuthenticated", "false");
   };
+  useEffect(() => {
+    localStorage.setItem("isAuthenticated", isAuthenticated.toString());
+    localStorage.setItem("uuid", uuid);
+  }, [isAuthenticated, uuid]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, uuid, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

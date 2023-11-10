@@ -1,5 +1,5 @@
 {
-  "applicationId": "js.neutralino.zero",
+  "applicationId": "password.manager.uem",
   "version": "1.0.0",
   "defaultMode": "window",
   "documentRoot": "/frontend/dist/",
@@ -8,11 +8,18 @@
   "enableNativeAPI": true,
   "enableExtensions": true,
   "exportAuthInfo": true,
+  "logging": {
+    "enabled": true,
+    "writeToLogFile": true
+  },
   "nativeAllowList": [
     "app.*",
     "storage.*",
     "os.*",
-    "extensions.*"
+    "extensions.*",
+    "filesystem.*",
+    "debug.log",
+    "clipboard.*"
   ],
   "modes": {
     "window": {
@@ -41,8 +48,8 @@
   },
   "extensions": [
     {
-      "id": "index",
-      "command": "node ${NL_PATH}/extensions/binary/nodeServer/index.js"
+      "id": "password.manager.uem.nodeServer",
+      "command": "node ${NL_PATH}/extensions/nodeServer/index.js"
     }
   ]
 }

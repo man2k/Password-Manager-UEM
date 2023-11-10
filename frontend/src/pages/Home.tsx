@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { extensions } from "@neutralinojs/lib";
 
 const Home = () => {
-  extensions.dispatch("index", "dataFunction", "").then((e) => {
+  extensions.getStats().then((e) => {
     console.log(e);
   });
 

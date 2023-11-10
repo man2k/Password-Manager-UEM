@@ -8,4 +8,9 @@ Native Password Manager. Written in js with neutralinojs for offline use. #proje
 
 ## NeutralinoJS dev commands:
 
+`neu run`
 `neu run -- --window-enable-inspector`
+
+## NeutralinoJS Build Commands:
+
+`neu build`

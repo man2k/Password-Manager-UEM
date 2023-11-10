@@ -11,4 +11,4 @@ neutralino.js
 # Neutralinojs related files
 .storage
 *.log
-
+*.db

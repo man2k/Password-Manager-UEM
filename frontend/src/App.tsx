@@ -1,18 +1,30 @@
 import { useContext } from "react";
 import { Routes, Route, Navigate, RouteProps } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
-    <main className="App bg-[url('../public/3.jpg')] bg-cover">
+    <main className="App bg-[url('../public/3.jpg')] bg-cover bg-scroll">
       <Navbar />
-
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route

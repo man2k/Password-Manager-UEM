@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blur-text {
+  filter: blur(2px); /* Adjust the pixel value as needed */
+}
