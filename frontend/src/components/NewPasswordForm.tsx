@@ -54,6 +54,7 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
     }
     addNewPassword();
     clearForm();
+    setShowPopup(false);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,9 +99,9 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 text-white">
-      <div className="bg-slate-800 rounded-lg p-5">
+      <div className="bg-slate-800 rounded-lg p-5 w-[300px] h-[320px]">
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="text-violet-300">
             <label htmlFor="website" className="block text-sm font-medium">
               Website
             </label>
@@ -110,7 +111,7 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
               name="website"
               value={formData.website}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-violet-200 text-black px-2"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-indigo-400 text-black px-2 py-0.5"
             />
             <label
               htmlFor="username/email"
@@ -124,7 +125,7 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
               name="username"
               value={formData.username}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-violet-200 text-black px-2"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-indigo-400 text-black px-2 py-0.5"
             />
             <label htmlFor="password" className="block text-sm font-medium">
               Password
@@ -136,7 +137,7 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-violet-200 text-black px-2"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-indigo-400 text-black px-2 py-0.5"
               />
               <button
                 onClick={(e) => {
@@ -228,7 +229,7 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
               name="notes"
               value={formData.notes}
               onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-violet-200 text-black px-2"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-indigo-400 text-black px-2 py-0.5"
             />
           </div>
           <div className="mt-4 flex gap-2">

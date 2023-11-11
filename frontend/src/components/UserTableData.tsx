@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { clipboard } from "@neutralinojs/lib";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 type UserDataFormat = {
   id: number;
   website: string;
