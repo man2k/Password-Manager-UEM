@@ -8,7 +8,6 @@ Native Password Manager. Written in js with neutralinojs for offline use. #proje
 ![3](https://github.com/man2k/Password-Manager-UEM/assets/124410051/0f85fccb-9441-4ea3-8f7d-5643baa80258)
 ![4](https://github.com/man2k/Password-Manager-UEM/assets/124410051/514c0d13-8b74-41c5-8575-e58e36e40244)
 
-
 ## Install Neutralino CLI:
 
 `npm install -g @neutralinojs/neu`
@@ -16,6 +15,7 @@ Native Password Manager. Written in js with neutralinojs for offline use. #proje
 ## NeutralinoJS dev commands:
 
 `neu run`
+
 `neu run -- --window-enable-inspector`
 
 ## NeutralinoJS Build Commands:

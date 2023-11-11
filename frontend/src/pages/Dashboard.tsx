@@ -14,28 +14,31 @@ type userDataFormat = {
 };
 
 const Dashboard = () => {
-  const { uuid } = useContext(AuthContext);
+  const { uuid, pw } = useContext(AuthContext);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [userData, setUserData] = useState<userDataFormat[]>([]);
   const [pcount, setPcount] = useState<number>(0);
-
+  const [refresh, setRefresh] = useState<number>(0);
+  const dataRefresh = () => {
+    if (refresh === 1) {
+      setRefresh(0);
+    } else if (refresh === 0) {
+      setRefresh(1);
+    }
+  };
+  events.on("refresh", dataRefresh);
+  events.on("readPrivReply", (evt) => {
+    const dat = JSON.parse(evt.detail);
+    setUserData(dat);
+    setPcount(dat.length);
+  });
   useEffect(() => {
-    events.on("readPrivReply", (evt) => {
-      const dat = JSON.parse(evt.detail);
-      setUserData(dat);
-      setPcount(dat.length);
-    });
-
     extensions.dispatch(
       "password.manager.uem.nodeServer",
       "readPrivData",
-      JSON.stringify({ uuid: uuid })
+      JSON.stringify({ uuid: uuid, password: pw })
     );
-
-    // return () => {
-    // second;
-    // };
-  }, ["userData"]);
+  }, [refresh]);
 
   return (
     <div className="min-h-screen p-4">
@@ -55,9 +58,7 @@ const Dashboard = () => {
             >
               Add New Password
             </button>
-            {showPopup && (
-              <NewPasswordForm uuid={uuid} setShowPopup={setShowPopup} />
-            )}
+            {showPopup && <NewPasswordForm setShowPopup={setShowPopup} />}
           </div>
           <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <button className="border-[1px] border-indigo-400 rounded-md mt-2 p-1 bg-indigo-400 text-black">

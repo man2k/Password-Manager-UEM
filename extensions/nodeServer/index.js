@@ -24,9 +24,9 @@ const dataFunction = () => {
 
   function onclose() {
     console.log("Connection has been closed");
-    // Make sure to exit the extension process when WS extension is closed (when Neutralino app exits)
     process.exit();
   }
+
   function sendData(dataArray) {
     ws.send(
       JSON.stringify({
@@ -40,64 +40,101 @@ const dataFunction = () => {
       })
     );
   }
+
+  // function searchRow(db, uuid, searchColumn, searchValue, callback) {
+  //   const query = `SELECT * FROM "${uuid}" WHERE "${searchColumn}" = ?`;
+  //   db.get(query, [searchValue], function (err, row) {
+  //     if (err) {
+  //       callback(err);
+  //       return;
+  //     }
+  //     callback(null, row);
+  //   });
+  // }
+
+  function deleteRowById(db, uuid, rowId, callback) {
+    const query = `DELETE FROM "${uuid}" WHERE rowid = ?`;
+    db.run(query, [rowId], function (err) {
+      if (err) {
+        callback(err);
+        return;
+      }
+      callback(null, `Row with ID ${rowId} deleted successfully.`);
+    });
+  }
+
   function onmessage(e) {
-    // the typical message sent from the neu application is a string in the form {"data": value, "event": "dispatchedEventName"} so we parse the data here
     if (typeof e.data === "string") {
       const message = JSON.parse(e.data);
 
-      // Use extensions.dispatch or extensions.broadcast from the app,
-      // to send an event here
       const eventName = message.event;
       if (eventName === "windowClose") {
         ws.close(0);
-      } else if (eventName === "readPrivData") {
+      } else if (eventName === "initDB") {
         const data = JSON.parse(message.data);
-        console.log(data);
 
+        console.log("newdb", data);
         const db = new sqlite3.Database(`${data.uuid}.db`);
-        let dataArray = []; // Initialize an array to store the objects
         db.serialize(function () {
           db.run("PRAGMA cipher_compatibility = 4");
-
-          db.run(`PRAGMA key = '${data.uuid}'`);
-          // db.run(
-          //   `CREATE TABLE IF NOT EXISTS "${data.uuid}" (website TEXT,username TEXT, email TEXT, password TEXT, notes TEXT)`
-          // );
-          db.each(
-            `SELECT rowid AS id, website, username, email, password, notes FROM "${data.uuid}"`,
-            function (err, row) {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              dataArray.push({
-                id: row.id,
-                website: row.website,
-                username: row.username,
-                email: row.email,
-                password: row.password,
-                notes: row.notes,
-              });
-            },
-            function (err, count) {
-              if (err) {
-                console.error(err);
-                return;
-              }
-              sendData(dataArray);
-              // console.log("All rows fetched:", dataArray);
-            }
+          db.run(`PRAGMA key = '${data.password}'`);
+          db.run(
+            `CREATE TABLE IF NOT EXISTS "${data.uuid}" (website TEXT,username TEXT, email TEXT, password TEXT, notes TEXT)`
           );
         });
         db.close();
+      } else if (eventName === "readPrivData") {
+        const data = JSON.parse(message.data);
+        console.log("read", data);
+        // let db;
+        console.log(fs.existsSync(`${data.uuid}.db`));
+        if (fs.existsSync(`${data.uuid}.db`)) {
+          const db = new sqlite3.Database(`${data.uuid}.db`);
+          let dataArray = [];
+          db.serialize(function () {
+            db.run("PRAGMA cipher_compatibility = 4");
+
+            db.run(`PRAGMA key = '${data.password}'`);
+
+            db.each(
+              `SELECT rowid AS id, website, username, email, password, notes FROM "${data.uuid}"`,
+              function (err, row) {
+                if (err) {
+                  console.error(err);
+                  return;
+                }
+                dataArray.push({
+                  id: row.id,
+                  website: row.website,
+                  username: row.username,
+                  email: row.email,
+                  password: row.password,
+                  notes: row.notes,
+                });
+              },
+              function (err, count) {
+                if (err) {
+                  console.error(err);
+                  return;
+                }
+                sendData(dataArray);
+              }
+            );
+          });
+          db.close();
+        } else {
+          console.log("DB don't exist");
+          return;
+        }
+        // const db = new sqlite3.Database(`${data.uuid}.db`);
       } else if (eventName === "newPassword") {
         const data = JSON.parse(message.data);
         const db = new sqlite3.Database(`${data.uuid}.db`);
-        console.log(data);
+        // console.log(data);
         let dataArray = [];
         db.serialize(function () {
           db.run("PRAGMA cipher_compatibility = 4");
-          db.run(`PRAGMA key = '${data.uuid}'`);
+          db.run(`PRAGMA key = '${data.mpassword}'`);
           db.run(
             `CREATE TABLE IF NOT EXISTS "${data.uuid}" (website TEXT,username TEXT, email TEXT, password TEXT, notes TEXT)`
           );
@@ -136,15 +173,28 @@ const dataFunction = () => {
               }
               console.log(dataArray);
               sendData(dataArray);
-              // console.log("All rows fetched:", dataArray);
             }
           );
         });
         db.close();
 
         sendData(dataArray);
+      } else if (eventName === "deletePassword") {
+        const data = JSON.parse(message.data);
+        const db = new sqlite3.Database(`${data.uuid}.db`);
+        db.serialize(function () {
+          db.run("PRAGMA cipher_compatibility = 4");
+          db.run(`PRAGMA key = '${data.password}'`);
+          deleteRowById(db, data.uuid, data.rowid, function (err, message) {
+            if (err) {
+              console.error("Error:", err);
+              return;
+            }
+            console.log(message);
+          });
+        });
+        db.close();
       }
-      // Add else for the default case if needed
     }
   }
   const ws = new websocket(WS_URL);

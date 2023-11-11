@@ -7,9 +7,18 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+
 import { ToastContainer } from "react-toastify";
+import { app, events } from "@neutralinojs/lib";
 
 function App() {
+  function onWindowClose() {
+    console.log("clossing");
+    localStorage.clear();
+    app.exit();
+  }
+  events.on("windowClose", onWindowClose);
+
   return (
     <main className="App bg-[url('../public/3.jpg')] bg-cover bg-scroll">
       <Navbar />

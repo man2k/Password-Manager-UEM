@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { clipboard } from "@neutralinojs/lib";
 import { toast } from "react-toastify";
+import ConfirmationModal from "./ConfirmationModal";
 type UserDataFormat = {
   id: number;
   website: string;
@@ -13,12 +14,14 @@ type UserDataFormat = {
 type UserTableDataProps = {
   udata: UserDataFormat;
 };
-//   type Props = {}
 
 const UserTableData: React.FC<UserTableDataProps> = ({ udata }) => {
-  const [passOrText, setPassOrText] = useState("password");
-  //   console.log(udata);
+  const [passOrText, setPassOrText] = useState<"password" | "text">("password");
+  const [delPopup, setDelPopup] = useState<boolean>(false); //temporar
 
+  const confirmModal = () => {
+    setDelPopup(true);
+  };
   const viewHidePass = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     passOrText == "password"
@@ -134,9 +137,41 @@ const UserTableData: React.FC<UserTableDataProps> = ({ udata }) => {
         </td>
         <td
           key="notes"
-          className="px-6 py-4 whitespace-nowrap text-sm font-medium"
+          className="px-6 py-4 whitespace-nowrap text-sm font-medium flex flex-row justify-between"
         >
-          {udata.notes}
+          <div>{udata.notes}</div>
+          <div>
+            <button
+              onClick={() => {
+                confirmModal();
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5 text-gray-500 hover:text-violet-800 hover:shadow-md"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            {delPopup ? (
+              <>
+                <ConfirmationModal
+                  setDelPopup={setDelPopup}
+                  rowid={udata.id.toString()}
+                />
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </td>
       </tr>
     </tbody>

@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { storage } from "@neutralinojs/lib";
+import { extensions, storage } from "@neutralinojs/lib";
 import bcrypt from "bcryptjs";
 import { AuthContext } from "../context/AuthContext";
 
@@ -35,8 +35,15 @@ const login = () => {
         const p = JSON.parse(d);
         if (await bcrypt.compare(password, p.password)) {
           toast("You are Logged In!");
+          extensions
+            .dispatch(
+              "password.manager.uem.nodeServer",
+              "initDB",
+              JSON.stringify({ uuid: p.id, password: password })
+            )
+            .then((e) => console.log(e));
           // console.log(login());
-          login(p.id);
+          login(p.id, password);
         } else {
           toast("Wrong Username or Password!");
         }
@@ -85,17 +92,6 @@ const login = () => {
               Sign Up
             </Link>
           </p>
-          {/* <p className="text-center mt-3 text-[14px]">
-            By clicking continue, you agree to our
-            <a href="/terms" className="">
-              Terms of Service
-            </a>{" "}
-            and{" "}
-            <a href="/privacy" className="">
-              Privacy Policy
-            </a>
-            .
-          </p> */}
         </div>
       </div>
     </main>

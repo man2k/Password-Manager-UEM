@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { generatePassword, copyToClipB } from "../utils/Utilities";
 import { extensions } from "@neutralinojs/lib";
 import { toast } from "react-toastify";
-
+import { AuthContext } from "../context/AuthContext";
 type formDataType = {
   website: string;
   username: string;
@@ -12,11 +12,12 @@ type formDataType = {
 };
 
 type Props = {
-  uuid: string;
+  // uuid: string;
   setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
+const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
+  const { uuid, pw } = useContext(AuthContext);
   useEffect(() => {
     return () => {
       clearForm();
@@ -37,6 +38,7 @@ const NewPasswordForm: React.FC<Props> = ({ uuid, setShowPopup }) => {
       "newPassword",
       JSON.stringify({
         uuid: uuid,
+        mpassword: pw,
         website: formData.website,
         username: formData.username,
         email: formData.email,
