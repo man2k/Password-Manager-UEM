@@ -19,7 +19,8 @@ const UserTableData: React.FC<UserTableDataProps> = ({ udata }) => {
   const [passOrText, setPassOrText] = useState("password");
   //   console.log(udata);
 
-  const viewHidePass = () => {
+  const viewHidePass = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     passOrText == "password"
       ? setPassOrText("text")
       : setPassOrText("password");
@@ -108,7 +109,8 @@ const UserTableData: React.FC<UserTableDataProps> = ({ udata }) => {
               )}
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 copyToClipB(udata.password);
               }}
               className="ml-2"
