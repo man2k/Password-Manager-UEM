@@ -9,19 +9,18 @@ type Props = {
 const ConfirmationModal: React.FC<Props> = ({ setDelPopup, rowid }) => {
   const { uuid, pw } = useContext(AuthContext);
   const handleDelete = () => {
-    extensions
-      .dispatch(
-        "password.manager.uem.nodeServer",
-        "deletePassword",
-        JSON.stringify({
-          uuid: uuid,
-          rowid: rowid,
-          password: pw,
-        })
-      )
-      .then((e) => {
-        console.log(e);
-      });
+    extensions.dispatch(
+      "password.manager.uem.nodeServer",
+      "deletePassword",
+      JSON.stringify({
+        uuid: uuid,
+        rowid: rowid,
+        password: pw,
+      })
+    );
+    // .then((e) => {
+    //   console.log(e);
+    // });
     extensions.dispatch(
       "password.manager.uem.nodeServer",
       "readPrivData",

@@ -14,20 +14,20 @@ const NL_EXTID = "password.manager.uem.nodeServer";
 const WS_URL = `ws://localhost:${NL_PORT}?extensionId=${NL_EXTID}`;
 
 const dataFunction = () => {
-  function onerror(e) {
+  const onerror = (e) => {
     console.log("There is a connection error!");
-  }
+  };
 
-  function onopen() {
+  const onopen = () => {
     console.log("Connected to application!");
-  }
+  };
 
-  function onclose() {
+  const onclose = () => {
     console.log("Connection has been closed");
     process.exit();
-  }
+  };
 
-  function sendData(dataArray) {
+  const sendData = (dataArray) => {
     ws.send(
       JSON.stringify({
         id: uuidv4(),
@@ -39,9 +39,9 @@ const dataFunction = () => {
         },
       })
     );
-  }
+  };
 
-  // function searchRow(db, uuid, searchColumn, searchValue, callback) {
+  // const searchRow = (db, uuid, searchColumn, searchValue, callback)=> {
   //   const query = `SELECT * FROM "${uuid}" WHERE "${searchColumn}" = ?`;
   //   db.get(query, [searchValue], function (err, row) {
   //     if (err) {
@@ -52,7 +52,7 @@ const dataFunction = () => {
   //   });
   // }
 
-  function deleteRowById(db, uuid, rowId, callback) {
+  const deleteRowById = (db, uuid, rowId, callback) => {
     const query = `DELETE FROM "${uuid}" WHERE rowid = ?`;
     db.run(query, [rowId], function (err) {
       if (err) {
@@ -61,9 +61,9 @@ const dataFunction = () => {
       }
       callback(null, `Row with ID ${rowId} deleted successfully.`);
     });
-  }
+  };
 
-  function onmessage(e) {
+  const onmessage = (e) => {
     if (typeof e.data === "string") {
       const message = JSON.parse(e.data);
 
@@ -192,11 +192,37 @@ const dataFunction = () => {
             }
             console.log(message);
           });
+          const dataArray = [];
+          db.each(
+            `SELECT rowid AS id, website, username, email, password, notes FROM "${data.uuid}"`,
+            function (err, row) {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              dataArray.push({
+                id: row.id,
+                website: row.website,
+                username: row.username,
+                email: row.email,
+                password: row.password,
+                notes: row.notes,
+              });
+            },
+            function (err, count) {
+              if (err) {
+                console.error(err);
+                return;
+              }
+              console.log(dataArray);
+              sendData(dataArray);
+            }
+          );
         });
         db.close();
       }
     }
-  }
+  };
   const ws = new websocket(WS_URL);
   ws.onopen = onopen;
   ws.onmessage = onmessage;

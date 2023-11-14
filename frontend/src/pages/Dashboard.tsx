@@ -18,27 +18,22 @@ const Dashboard = () => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [userData, setUserData] = useState<userDataFormat[]>([]);
   const [pcount, setPcount] = useState<number>(0);
-  const [refresh, setRefresh] = useState<number>(0);
-  const dataRefresh = () => {
-    if (refresh === 1) {
-      setRefresh(0);
-    } else if (refresh === 0) {
-      setRefresh(1);
-    }
-  };
-  events.on("refresh", dataRefresh);
+
   events.on("readPrivReply", (evt) => {
     const dat = JSON.parse(evt.detail);
-    setUserData(dat);
-    setPcount(dat.length);
+    if (dat.length !== userData.length) {
+      setUserData(dat);
+      setPcount(dat.length);
+    }
   });
+
   useEffect(() => {
     extensions.dispatch(
       "password.manager.uem.nodeServer",
       "readPrivData",
       JSON.stringify({ uuid: uuid, password: pw })
     );
-  }, [refresh]);
+  }, []);
 
   return (
     <div className="min-h-screen p-4">

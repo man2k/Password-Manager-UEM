@@ -49,7 +49,7 @@
   "extensions": [
     {
       "id": "password.manager.uem.nodeServer",
-      "command": "node ${NL_PATH}/extensions/nodeServer/index.js"
+      "command": "node /extensions/nodeServer/index.js"
     }
   ]
 }
