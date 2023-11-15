@@ -12,6 +12,10 @@ export const generatePassword = (length: number) => {
 };
 
 export const copyToClipB = async (text: string) => {
-  await clipboard.writeText(text);
-  toast(<p className="text-md">copied to clipboard</p>);
+  if (text !== "" || text) {
+    await clipboard.writeText(text);
+    toast(<p className="text-md">copied to clipboard</p>);
+  } else {
+    toast(<p className="text-md">Nothing to copy to clipboard</p>);
+  }
 };

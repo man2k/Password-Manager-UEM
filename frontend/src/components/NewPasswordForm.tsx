@@ -132,20 +132,13 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
             <label htmlFor="password" className="block text-sm font-medium">
               Password
             </label>
-            <div className="flex flex-row gap-1">
-              <input
-                type={passOrText}
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-indigo-400 text-black px-2 py-0.5"
-              />
+            <div className="relative flex flex-row gap-1">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   handlePasswordGen(generatePassword(16));
                 }}
+                className="absolute right-0 mt-1.5"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +146,7 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-5 h-5 stroke-indigo-900"
                 >
                   <path
                     strokeLinecap="round"
@@ -167,6 +160,7 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                   e.preventDefault();
                   copyToClipB(formData.password);
                 }}
+                className="absolute right-5 mt-1.5"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -174,7 +168,7 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5"
+                  className="w-5 h-5 stroke-indigo-900"
                 >
                   <path
                     strokeLinecap="round"
@@ -183,7 +177,10 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                   />
                 </svg>
               </button>
-              <button onClick={viewHidePass}>
+              <button
+                onClick={viewHidePass}
+                className="absolute right-10 mt-1.5"
+              >
                 {passOrText == "password" ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +188,7 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5"
+                    className="w-5 h-5 stroke-indigo-900"
                   >
                     <path
                       strokeLinecap="round"
@@ -211,7 +208,7 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-5 h-5"
+                    className="w-5 h-5 stroke-indigo-900"
                   >
                     <path
                       strokeLinecap="round"
@@ -221,6 +218,14 @@ const NewPasswordForm: React.FC<Props> = ({ setShowPopup }) => {
                   </svg>
                 )}
               </button>
+              <input
+                type={passOrText}
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-indigo-400 text-black px-2 py-0.5"
+              />
             </div>
             <label htmlFor="notes" className="block text-sm font-medium">
               Notes

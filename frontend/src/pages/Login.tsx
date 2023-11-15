@@ -1,15 +1,24 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { extensions, storage } from "@neutralinojs/lib";
-import bcrypt from "bcryptjs";
+
+import CryptoJS from "crypto-js";
 import { AuthContext } from "../context/AuthContext";
 
 const login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const { login } = useContext(AuthContext);
+
+  const verifyPassword = (pass: string, hash: string, salt: string) => {
+    const keys = CryptoJS.PBKDF2(pass, salt, {
+      keySize: 512 / 32,
+      iterations: 10000,
+    });
+    const enteredHash = keys.toString(CryptoJS.enc.Hex);
+    return enteredHash === hash;
+  };
 
   const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -27,13 +36,16 @@ const login = () => {
       toast("No password has been provided");
       return;
     } else {
+      // toast("getting in");
       const k = await storage.getKeys();
+      // toast(k.length);
       if (!k.includes(username)) {
         toast("Wrong Username or Password!");
       } else {
         const d = await storage.getData(username);
         const p = JSON.parse(d);
-        if (await bcrypt.compare(password, p.password)) {
+        // console.log(verifyPassword(password, p.password, p.salt));
+        if (verifyPassword(password, p.password, p.salt)) {
           toast("You are Logged In!");
           extensions
             .dispatch(
@@ -42,7 +54,6 @@ const login = () => {
               JSON.stringify({ uuid: p.id, password: password })
             )
             .then((e) => console.log(e));
-          // console.log(login());
           login(p.id, password);
         } else {
           toast("Wrong Username or Password!");

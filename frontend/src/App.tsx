@@ -1,12 +1,12 @@
 import { useContext } from "react";
 import { Routes, Route, Navigate, RouteProps } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
-import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
+import "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer } from "react-toastify";
 import { app, events } from "@neutralinojs/lib";

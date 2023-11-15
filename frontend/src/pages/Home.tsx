@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { extensions } from "@neutralinojs/lib";
 
 const Home = () => {
-  extensions.getStats().then((e) => {
+  // let stat: extensions.ExtensionStats;
+  extensions.getStats().then((e: extensions.ExtensionStats) => {
     console.log(e);
+
+    // stat = e;
   });
 
   return (
@@ -23,6 +26,7 @@ const Home = () => {
             <Link to="/login">Get Started</Link>
           </button>
         </h2>
+        {/* <h3>{stat?.connected}</h3> */}
       </div>
     </main>
   );

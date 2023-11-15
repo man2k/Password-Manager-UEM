@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@journeyapps/sqlcipher": "^5.3.1",
+    "bcrypt": "^5.1.1",
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.1",
     "websocket": "^1.0.34"

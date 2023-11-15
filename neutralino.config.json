@@ -8,6 +8,7 @@
   "enableNativeAPI": true,
   "enableExtensions": true,
   "exportAuthInfo": true,
+  "tokenSecurity": "one-time",
   "logging": {
     "enabled": true,
     "writeToLogFile": true
@@ -49,7 +50,7 @@
   "extensions": [
     {
       "id": "password.manager.uem.nodeServer",
-      "command": "node /extensions/nodeServer/index.js"
+      "command": "node ${NL_PATH}/extensions/nodeServer/index.js"
     }
   ]
 }

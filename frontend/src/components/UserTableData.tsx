@@ -19,8 +19,8 @@ const UserTableData: React.FC<UserTableDataProps> = ({ udata }) => {
   const [passOrText, setPassOrText] = useState<"password" | "text">("password");
   const [delPopup, setDelPopup] = useState<boolean>(false); //temporar
 
-  const confirmModal = () => {
-    setDelPopup(true);
+  const confirmModal = (c: boolean) => {
+    setDelPopup(c);
   };
   const viewHidePass = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -143,7 +143,7 @@ const UserTableData: React.FC<UserTableDataProps> = ({ udata }) => {
           <div>
             <button
               onClick={() => {
-                confirmModal();
+                confirmModal(true);
               }}
             >
               <svg
