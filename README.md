@@ -16,7 +16,11 @@ Native Password Manager. Written in js with neutralinojs for offline use. #proje
 
 `neu update`
 
+`cd extensions/nodeServer && npm install && cd ../..`
+
 `neu run`
+
+### OR
 
 `neu run -- --window-enable-inspector`
 
