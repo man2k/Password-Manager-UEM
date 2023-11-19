@@ -10,20 +10,32 @@ Native Password Manager. Written in js with neutralinojs for offline use. #proje
 
 ## Install Neutralino CLI:
 
-`npm install -g @neutralinojs/neu`
+```bash
+npm install -g @neutralinojs/neu
+```
 
 ## NeutralinoJS dev commands:
 
-`neu update`
+```bash
+neu update
+```
 
-`cd extensions/nodeServer && npm install && cd ../..`
+```bash
+cd extensions/nodeServer && npm install && cd ../../frontend/ && npm install && cd ../
+```
 
-`neu run`
+```bash
+neu run
+```
 
 ### OR
 
-`neu run -- --window-enable-inspector`
+```bash
+neu run -- --window-enable-inspector
+```
 
 ## NeutralinoJS Build Commands:
 
-`neu build`
+```bash
+neu build
+```
